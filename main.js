@@ -616,11 +616,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const successMessage = document.getElementById('success-message');
 
   console.log('[FORM] Formulaire initialisé');
-  console.log('[FORM] URL d\'envoi configurée:', window.SEND_EMAIL_URL || '/send-email.php');
+  console.log('[FORM] URL d\'envoi configurée:', window.SEND_EMAIL_URL || 'https://formsubmit.co/ajax/contact@jk-couverture.com');
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     console.log('[FORM] Soumission du formulaire détectée');
+
+    // Honeypot anti-spam : si rempli, c'est un bot -> on ignore silencieusement
+    const honeypot = form.querySelector('[name="_honey"]');
+    if (honeypot && honeypot.value) { console.log('[FORM] Spam détecté (honeypot)'); return; }
 
     // Reset erreurs
     document.querySelectorAll('.hint-error').forEach(el => el.style.display = 'none');
@@ -673,12 +677,15 @@ document.addEventListener('DOMContentLoaded', () => {
         nom: nom.value.trim(),
         email: email.value.trim(),
         telephone: telephone.value.trim(),
-        message: message.value.trim()
+        message: message.value.trim(),
+        _subject: 'Nouvelle demande de devis - jk-couvreur-28.fr',
+        _template: 'table',
+        _captcha: 'false'
       };
 
       console.log('[FORM] Données à envoyer:', {nom: formData.nom, email: formData.email, telephone: formData.telephone});
 
-      const sendUrl = window.SEND_EMAIL_URL || '/send-email.php';
+      const sendUrl = window.SEND_EMAIL_URL || 'https://formsubmit.co/ajax/contact@jk-couverture.com';
       console.log('[FORM] Envoi vers:', sendUrl);
 
       // Envoyer les données au serveur (chemin adaptatif WordPress/Replit)
@@ -686,6 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify(formData)
       })
@@ -727,7 +735,7 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('[FORM] Échec:', data.error);
           // Afficher erreur avec le message du serveur
           successMessage.style.display = 'block';
-          successMessage.textContent = '? ' + (data.error || 'Erreur lors de l\'envoi. Veuillez réessayer ou nous appeler au 07 63 52 52 05');
+          successMessage.textContent = '? ' + (data.error || 'Erreur lors de l\'envoi. Veuillez réessayer ou nous appeler au 02 34 40 17 88');
           successMessage.style.background = '#f8d7da';
           successMessage.style.color = '#721c24';
         }
