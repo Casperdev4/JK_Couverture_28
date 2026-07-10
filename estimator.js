@@ -1,4 +1,4 @@
-﻿
+
 // Estimateur de prix pour couvreur - Module indépendant
 const PriceEstimator = (function() {
     let currentStep = 1;
@@ -550,7 +550,7 @@ const PriceEstimator = (function() {
             
             console.log('[ESTIMATEUR] Données à envoyer:', emailData);
             
-            const sendUrl = window.SEND_EMAIL_URL || '/send-email.php';
+            const sendUrl = window.SEND_EMAIL_URL || 'https://formsubmit.co/ajax/contact@jk-couverture.com';
             console.log('[ESTIMATEUR] Envoi vers:', sendUrl);
             
             try {
@@ -565,7 +565,7 @@ const PriceEstimator = (function() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(emailData)
+                    body: JSON.stringify({ ...emailData, _subject: 'Nouvelle demande estimateur - jk-couvreur-28.fr', _template: 'table', _captcha: 'false' })
                 });
                 
                 console.log('[ESTIMATEUR] Réponse reçue, status:', response.status);
@@ -640,7 +640,7 @@ const PriceEstimator = (function() {
             console.log('[ESTIMATEUR] Données brutes:', estimatorData);
             console.log('[ESTIMATEUR] Données à envoyer:', emailData);
             
-            const sendUrl = window.SEND_EMAIL_URL || '/send-email.php';
+            const sendUrl = window.SEND_EMAIL_URL || 'https://formsubmit.co/ajax/contact@jk-couverture.com';
             console.log('[ESTIMATEUR] Envoi vers:', sendUrl);
             
             try {
@@ -654,7 +654,7 @@ const PriceEstimator = (function() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(emailData)
+                    body: JSON.stringify({ ...emailData, _subject: 'Nouvelle demande estimateur - jk-couvreur-28.fr', _template: 'table', _captcha: 'false' })
                 });
                 
                 console.log('[ESTIMATEUR] Réponse reçue, status:', response.status);
